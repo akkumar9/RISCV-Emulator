@@ -83,6 +83,7 @@ InstructionType Decoder::get_type(uint8_t opcode) {
         case 0x13: return InstructionType::I_TYPE;  // ADDI, SLTI, XORI, etc.
         case 0x03: return InstructionType::I_TYPE;  // LW, LH, LB
         case 0x67: return InstructionType::I_TYPE;  // JALR
+        case 0x73: return InstructionType::I_TYPE;  // ECALL, EBREAK, CSR  ← ADD THIS LINE
         case 0x23: return InstructionType::S_TYPE;  // SW, SH, SB
         case 0x63: return InstructionType::B_TYPE;  // BEQ, BNE, BLT, BGE
         case 0x37: return InstructionType::U_TYPE;  // LUI

@@ -4,6 +4,7 @@
 #include "cpu.h"
 #include "decoder.h"
 #include <unordered_map>
+#include "profiler.h"
 
 class Interpreter {
 public:
@@ -18,10 +19,13 @@ public:
     // Statistics
     uint64_t get_instructions_executed() const { return instructions_executed; }
     void reset_stats() { instructions_executed = 0; }
+    const Profiler& get_profiler() const { return profiler; }
+    Profiler& get_profiler() { return profiler; }
     
 private:
     CPU& cpu;
     uint64_t instructions_executed;
+    Profiler profiler;
     
     // Instruction handlers
     void execute_r_type(const Instruction& inst);
@@ -33,6 +37,7 @@ private:
     
     // Helper for system calls
     void handle_ecall();
+    
 };
 
 #endif // INTERPRETER_H

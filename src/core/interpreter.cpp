@@ -5,6 +5,10 @@
 void Interpreter::step() {
     // Fetch instruction
     uint32_t pc = cpu.get_pc();
+    
+    // PROFILE: Record this PC
+    profiler.record_instruction(pc);
+    
     uint32_t raw_inst = cpu.read_word(pc);
     
     // Decode
@@ -163,14 +167,23 @@ void Interpreter::execute_i_type(const Instruction& inst) {
         cpu.set_pc(target);
         
     } else if (inst.opcode == 0x73) {
-        // ECALL/EBREAK
+    // SYSTEM instructions
+    if (inst.funct3 == 0) {
         if (inst.imm == 0) {
             handle_ecall();
-        } else {
-            throw std::runtime_error("EBREAK encountered");
+        } else if (inst.imm == 1) {
+            // EBREAK - treat as breakpoint/halt
+            std::cout << "EBREAK encountered at PC: 0x" << std::hex << cpu.get_pc() << std::dec << std::endl;
+            throw std::runtime_error("EBREAK");
         }
-        cpu.increment_pc();
+    } else {
+        // CSR instructions (CSRRW, CSRRS, CSRRC, etc.)
+        // For now, just NOP them
+        std::cout << "Warning: CSR instruction not implemented (funct3: " 
+                  << static_cast<int>(inst.funct3) << ")" << std::endl;
     }
+    cpu.increment_pc();
+}
 }
 
 void Interpreter::execute_s_type(const Instruction& inst) {
