@@ -12,8 +12,10 @@ set(SOURCES
     src/core/cpu.cpp
     src/core/decoder.cpp
     src/core/interpreter.cpp
-    src/core/elf_loader.cpp  # ADD THIS
+    src/core/elf_loader.cpp
     src/core/profiler.cpp
+    src/jit/arm64_assembler.cpp
+    src/jit/jit_compiler.cpp
 )
 
 # Create library
@@ -31,3 +33,7 @@ add_executable(test_profile tests/test_profile.cpp)
 target_link_libraries(test_profile riscv_core)
 add_executable(test_debug tests/test_debug.cpp)
 target_link_libraries(test_debug riscv_core)
+add_executable(test_jit_basic tests/test_jit_basic.cpp)
+target_link_libraries(test_jit_basic riscv_core)
+add_executable(test_jit_riscv tests/test_jit_riscv.cpp)
+target_link_libraries(test_jit_riscv riscv_core)

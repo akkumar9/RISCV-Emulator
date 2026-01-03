@@ -99,7 +99,9 @@ public:
     // Debug
     void dump_registers() const;
     void dump_memory(uint32_t start, uint32_t length) const;
-
+    uint32_t* get_register_ptr() {
+        return registers.data();
+    }
 private:
     std::array<uint32_t, NUM_REGISTERS> registers;
     uint32_t pc;  // Program counter
